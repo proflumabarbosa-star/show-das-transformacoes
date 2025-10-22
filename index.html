@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Show dos Fenômenos Físicos e Químicos</title>
+    <title>Show dos Transformações Físicas e Químicas</title>
     <style>
         /* Estilos CSS (Levemente ajustados para um novo tema de cor) */
         body {
@@ -166,7 +166,7 @@
 <body>
 
 <div class="container">
-    <h1>Show dos Fenômenos Físicos e Químicos</h1>
+    <h1>Show dos Transformações Físicas e Químicas</h1>
     <div id="placar">Questão: <span id="num-questao">1</span> de <span id="total-questoes">3</span> | Acertos: <span id="acertos">0</span></div>
 
     <div id="pergunta-area">
@@ -192,17 +192,17 @@
     // Lista de Questões
     const questoes = [
     {
-            pergunta: "Qual das seguintes transformações é um exemplo de fenômeno físico?",
+            pergunta: "Qual das seguintes transformações é um exemplo de transformação física?",
             opcoes: ["A queima de um palito de fósforo", "O apodrecimento de uma fruta", "O congelamento da água", "A digestão de alimentos"],
             resposta: "O congelamento da água"
     },
     {
-            pergunta: "Um fenômeno químico é aquele em que há:",
+            pergunta: "Uma transformação química é aquela em que há:",
             opcoes: ["Apenas mudança de estado físico", "Alteração na composição da substância (formação de novas substâncias)", "Mudança de forma, mas não de composição", "Dissolução de um sal em água"],
             resposta: "Alteração na composição da substância (formação de novas substâncias)"
     },
     {
-        pergunta: "Qual das seguintes situações representa uma **transformação irreversível** causada por um fenômeno químico?",
+        pergunta: "Qual das seguintes situações representa uma **transformação irreversível** causada por uma transformação química?",
         opcoes: [
             "Derretimento da manteiga",
             "Evaporação da água do mar",
@@ -224,15 +224,15 @@
     {
         pergunta: "Quando a água ferve, ela passa para o estado gasoso. Esse é um exemplo de:",
         opcoes: [
-            "Fenômeno químico",
-            "Fenômeno nuclear",
-            "Fenômeno físico",
+            "Transformação química",
+            "Transformação nuclear",
+            "Transformação física",
             "Criação de nova substância"
         ],
-        resposta: "Fenômeno físico"
+        resposta: "Transformação física"
     },
     {
-        pergunta: "Por que a ferrugem que aparece no ferro é considerada um fenômeno químico?",
+        pergunta: "Por que a ferrugem que aparece no ferro é considerada uma transformação química?",
         opcoes: [
             "Porque muda só o estado do ferro",
             "Porque forma uma nova substância (óxido de ferro)",
@@ -242,7 +242,7 @@
         resposta: "Porque forma uma nova substância (óxido de ferro)"
     },
     {
-        pergunta: "Qual das opções mostra um fenômeno físico acontecendo?",
+        pergunta: "Qual das opções mostra uma transformação física acontecendo?",
         opcoes: [
             "A maçã apodrecendo na fruteira",
             "O gelo derretendo no copo",
@@ -252,14 +252,14 @@
         resposta: "O gelo derretendo no copo"
     },
     {
-        pergunta: "Ao pintar uma parede, qual fenômeno acontece com a tinta ao secar?",
+        pergunta: "Ao pintar uma parede, qual transformação acontece com a tinta ao secar?",
         opcoes: [
-            "Fenômeno químico, pois forma outra substância",
-            "Fenômeno físico, pois só a água da tinta evapora",
-            "Fenômeno nuclear, por causa da cor",
-            "Fenômeno químico, pois muda de cor"
+            "Transformação química, pois forma outra substância",
+            "Transformação física, pois só a água da tinta evapora",
+            "Transformação nuclear, por causa da cor",
+            "Transformação química, pois muda de cor"
         ],
-        resposta: "Fenômeno físico, pois só a água da tinta evapora"
+        resposta: "Transformação física, pois só a água da tinta evapora"
     },
     {
         pergunta: "Qual situação abaixo **não** representa a formação de uma nova substância?",
@@ -272,7 +272,7 @@
         resposta: "Derretimento de um sorvete"
     },
     {
-        pergunta: "Por que amassar uma latinha não é um fenômeno químico?",
+        pergunta: "Por que amassar uma latinha não é uma transformação química?",
         opcoes: [
             "Porque muda a composição da latinha",
             "Porque forma outra substância",
@@ -372,7 +372,7 @@
 
         if (opcaoSelecionada === respostaCorreta) {
             btnClicado.classList.add('correct');
-            feedbackArea.innerHTML = '<span style="color: green;">ACERTOU! FENÔMENO DETECTADO!</span>';
+            feedbackArea.innerHTML = '<span style="color: green;">ACERTOU! TRANSFORMAÇÃO DETECTADA!</span>';
             acertos++;
             placarAcertos.textContent = acertos;
         } else {
