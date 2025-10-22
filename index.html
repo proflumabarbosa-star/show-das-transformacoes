@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Show dos Fenômenos Físicos e Químicos</title>
+    <style>
+        /* Estilos CSS (Levemente ajustados para um novo tema de cor) */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f8ff; /* Azul muito claro */
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 800px;
+            border: 5px solid #00BCD4; /* Ciano - Cor do tema */
+        }
+
+        h1 {
+            color: #3F51B5; /* Roxo/Azul escuro */
+            text-align: center;
+            margin-bottom: 25px;
+            text-shadow: 1px 1px 2px #ccc;
+        }
+
+        #placar {
+            background-color: #FF9800; /* Laranja - Destaque */
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.2em;
+        }
+
+        #pergunta-area {
+            background-color: #E8F5E9; /* Verde muito claro */
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 5px solid #4CAF50; /* Verde - Natureza/Química */
+        }
+
+        #pergunta-texto {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #1A237E; /* Azul escuro */
+        }
+
+        .opcoes button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 10px;
+            border: none;
+            border-radius: 8px;
+            background-color: #CDDC39; /* Verde Limão */
+            color: #333;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.1s;
+        }
+
+        .opcoes button:hover {
+            background-color: #AFB42B; 
+            transform: scale(1.01);
+        }
+
+        .opcoes button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        
+        /* Estilos de feedback */
+        .opcoes button.correct {
+            background-color: #4CAF50; /* Verde */
+            color: white;
+            animation: pulse 0.5s 3;
+        }
+        
+        .opcoes button.incorrect {
+            background-color: #F44336; /* Vermelho */
+            color: white;
+        }
+
+        .botoes-ajuda {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            gap: 10px;
+        }
+
+        .botoes-ajuda button {
+            flex-grow: 1;
+            padding: 12px 10px;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+
+        .botoes-ajuda button:hover {
+            opacity: 0.9;
+        }
+        
+        .botoes-ajuda button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        #btn-pular { background-color: #673AB7; } /* Roxo */
+        #btn-consultar { background-color: #0097A7; } /* Ciano Escuro */
+        #btn-desistir { background-color: #D32F2F; } /* Vermelho escuro */
+        #btn-god-mode {
+            background-color: #607D8B;
+            margin-top: 15px;
+            width: 100%;
+            padding: 10px;
+            font-size: 0.9em;
+        }
+
+        #feedback-area {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1.2em;
+            font-weight: bold;
+            min-height: 25px;
+        }
+
+        #btn-proxima {
+            display: none;
+            width: 100%;
+            padding: 15px;
+            background-color: #3F51B5;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2em;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Show dos Fenômenos Físicos e Químicos</h1>
+    <div id="placar">Questão: <span id="num-questao">1</span> de <span id="total-questoes">3</span> | Acertos: <span id="acertos">0</span></div>
+
+    <div id="pergunta-area">
+        <div id="pergunta-texto">Aguardando início...</div>
+        <div class="opcoes" id="opcoes-area">
+            </div>
+    </div>
+    
+    <div class="botoes-ajuda">
+        <button id="btn-pular" onclick="usarPular()">Pular (1)</button>
+        <button id="btn-consultar" onclick="usarConsultarCaderno()">Consultar Caderno (1)</button>
+        <button id="btn-desistir" onclick="usarDesistir()">Desistir</button>
+    </div>
+    
+    <button id="btn-god-mode" onclick="godMode()">GOD_MODE (Ver Resposta)</button>
+
+    <div id="feedback-area"></div>
+    <button id="btn-proxima" onclick="proximaQuestao()">Próxima Questão »</button>
+
+</div>
+
+<script>
+    // Lista de Questões
+    const questoes = [
+    {
+            pergunta: "Qual das seguintes transformações é um exemplo de fenômeno físico?",
+            opcoes: ["A queima de um palito de fósforo", "O apodrecimento de uma fruta", "O congelamento da água", "A digestão de alimentos"],
+            resposta: "O congelamento da água"
+    },
+    {
+            pergunta: "Um fenômeno químico é aquele em que há:",
+            opcoes: ["Apenas mudança de estado físico", "Alteração na composição da substância (formação de novas substâncias)", "Mudança de forma, mas não de composição", "Dissolução de um sal em água"],
+            resposta: "Alteração na composição da substância (formação de novas substâncias)"
+    },
+    {
+        pergunta: "Qual das seguintes situações representa uma **transformação irreversível** causada por um fenômeno químico?",
+        opcoes: [
+            "Derretimento da manteiga",
+            "Evaporação da água do mar",
+            "Queima de papel",
+            "Solidificação do chocolate"
+        ],
+        resposta: "Queima de papel"
+    },
+    {
+        pergunta: "Ao colocar uma colher de açúcar no chá quente e ele desaparecer, o que aconteceu?",
+        opcoes: [
+            "O açúcar virou outra substância",
+            "O açúcar se transformou em gás",
+            "O açúcar se misturou com o chá, sem deixar de ser açúcar",
+            "O açúcar queimou e sumiu"
+        ],
+        resposta: "O açúcar se misturou com o chá, sem deixar de ser açúcar"
+    },
+    {
+        pergunta: "Quando a água ferve, ela passa para o estado gasoso. Esse é um exemplo de:",
+        opcoes: [
+            "Fenômeno químico",
+            "Fenômeno nuclear",
+            "Fenômeno físico",
+            "Criação de nova substância"
+        ],
+        resposta: "Fenômeno físico"
+    },
+    {
+        pergunta: "Por que a ferrugem que aparece no ferro é considerada um fenômeno químico?",
+        opcoes: [
+            "Porque muda só o estado do ferro",
+            "Porque forma uma nova substância (óxido de ferro)",
+            "Porque o ferro fica mais leve",
+            "Porque muda a forma do ferro"
+        ],
+        resposta: "Porque forma uma nova substância (óxido de ferro)"
+    },
+    {
+        pergunta: "Qual das opções mostra um fenômeno físico acontecendo?",
+        opcoes: [
+            "A maçã apodrecendo na fruteira",
+            "O gelo derretendo no copo",
+            "O pão sendo assado no forno",
+            "A madeira sendo queimada"
+        ],
+        resposta: "O gelo derretendo no copo"
+    },
+    {
+        pergunta: "Ao pintar uma parede, qual fenômeno acontece com a tinta ao secar?",
+        opcoes: [
+            "Fenômeno químico, pois forma outra substância",
+            "Fenômeno físico, pois só a água da tinta evapora",
+            "Fenômeno nuclear, por causa da cor",
+            "Fenômeno químico, pois muda de cor"
+        ],
+        resposta: "Fenômeno físico, pois só a água da tinta evapora"
+    },
+    {
+        pergunta: "Qual situação abaixo **não** representa a formação de uma nova substância?",
+        opcoes: [
+            "Assar um bolo",
+            "Fermentação de uma massa",
+            "Derretimento de um sorvete",
+            "Queima de papel"
+        ],
+        resposta: "Derretimento de um sorvete"
+    },
+    {
+        pergunta: "Por que amassar uma latinha não é um fenômeno químico?",
+        opcoes: [
+            "Porque muda a composição da latinha",
+            "Porque forma outra substância",
+            "Porque apenas muda a forma, mas continua sendo latinha",
+            "Porque ela derrete ao ser amassada"
+        ],
+        resposta: "Porque apenas muda a forma, mas continua sendo latinha"
+    }
+    ];
+
+    let questoesAtuais = [];
+    let indiceAtual = 0;
+    let acertos = 0;
+    let pulosRestantes = 1;
+    let consultasRestantes = 1;
+
+    // Elementos do DOM
+    const perguntaTexto = document.getElementById('pergunta-texto');
+    const opcoesArea = document.getElementById('opcoes-area');
+    const feedbackArea = document.getElementById('feedback-area');
+    const placarAcertos = document.getElementById('acertos');
+    const placarNumQuestao = document.getElementById('num-questao');
+    const placarTotalQuestoes = document.getElementById('total-questoes');
+    const btnProxima = document.getElementById('btn-proxima');
+    const btnPular = document.getElementById('btn-pular');
+    const btnConsultar = document.getElementById('btn-consultar');
+
+
+    // Função para embaralhar as questões
+    function embaralhar(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    // Função para iniciar ou reiniciar o jogo
+    function iniciarJogo() {
+        // 1. Aleatoriedade: Embaralha a lista de questões
+        questoesAtuais = embaralhar([...questoes]); 
+        
+        // Se a lista de questões for menor que 20, usa o total disponível
+        placarTotalQuestoes.textContent = questoesAtuais.length;
+        
+        indiceAtual = 0;
+        acertos = 0;
+        pulosRestantes = 1;
+        consultasRestantes = 1;
+        placarAcertos.textContent = acertos;
+        btnPular.disabled = false;
+        btnConsultar.disabled = false;
+        btnPular.textContent = `Pular (${pulosRestantes})`;
+        btnConsultar.textContent = `Consultar Caderno (${consultasRestantes})`;
+
+        carregarQuestao();
+    }
+
+    // Função para carregar a questão atual na tela
+    function carregarQuestao() {
+        if (indiceAtual >= questoesAtuais.length) {
+            finalizarJogo();
+            return;
+        }
+
+        const q = questoesAtuais[indiceAtual];
+        
+        placarNumQuestao.textContent = indiceAtual + 1;
+        perguntaTexto.textContent = `${indiceAtual + 1}. ${q.pergunta}`;
+        opcoesArea.innerHTML = '';
+        feedbackArea.textContent = '';
+        btnProxima.style.display = 'none';
+
+        // Cria e embaralha os botões de opção
+        const opcoesEmbaralhadas = embaralhar([...q.opcoes]);
+
+        opcoesEmbaralhadas.forEach(opcao => {
+            const btn = document.createElement('button');
+            btn.textContent = opcao;
+            btn.onclick = () => verificarResposta(btn, opcao, q.resposta);
+            opcoesArea.appendChild(btn);
+        });
+        
+        // Re-habilita os botões de opção se estavam desabilitados
+        document.querySelectorAll('.opcoes button').forEach(button => {
+            button.disabled = false;
+            button.classList.remove('correct', 'incorrect');
+        });
+    }
+
+    // Função para verificar se a resposta está correta
+    function verificarResposta(btnClicado, opcaoSelecionada, respostaCorreta) {
+        // Desabilita todos os botões após a escolha
+        document.querySelectorAll('.opcoes button').forEach(button => {
+            button.disabled = true;
+        });
+
+        if (opcaoSelecionada === respostaCorreta) {
+            btnClicado.classList.add('correct');
+            feedbackArea.innerHTML = '<span style="color: green;">ACERTOU! FENÔMENO DETECTADO!</span>';
+            acertos++;
+            placarAcertos.textContent = acertos;
+        } else {
+            btnClicado.classList.add('incorrect');
+            // Marca a resposta correta em verde para visualização
+            document.querySelectorAll('.opcoes button').forEach(button => {
+                if (button.textContent === respostaCorreta) {
+                    button.classList.add('correct');
+                }
+            });
+            feedbackArea.innerHTML = `<span style="color: red;">ERROU! A resposta correta era: ${respostaCorreta}</span>`;
+        }
+        
+        btnProxima.style.display = 'block';
+    }
+
+    // Função para avançar para a próxima questão
+    function proximaQuestao() {
+        indiceAtual++;
+        carregarQuestao();
+    }
+
+    // Função PULAR
+    function usarPular() {
+        if (pulosRestantes > 0) {
+            if (confirm("Deseja realmente PULAR esta questão? Você perderá um Pulo.")) {
+                pulosRestantes--;
+                btnPular.textContent = `Pular (${pulosRestantes})`;
+                if (pulosRestantes === 0) {
+                    btnPular.disabled = true;
+                }
+                indiceAtual++; // Avança a questão sem pontuar
+                carregarQuestao();
+            }
+        } else {
+            alert("Você não tem mais Pulos disponíveis!");
+        }
+    }
+
+    // Função CONSULTAR CADERNO (mostra a resposta sem pontuar)
+    function usarConsultarCaderno() {
+        if (consultasRestantes > 0) {
+            if (confirm("Deseja realmente CONSULTAR O CADERNO? (Irá mostrar a resposta correta, mas você não pontuará nesta questão)")) {
+                consultasRestantes--;
+                btnConsultar.textContent = `Consultar Caderno (${consultasRestantes})`;
+                if (consultasRestantes === 0) {
+                    btnConsultar.disabled = true;
+                }
+                
+                // Lógica da consulta: exibe a resposta, mas desabilita a pontuação
+                const q = questoesAtuais[indiceAtual];
+                feedbackArea.innerHTML = `<span style="color: blue;">CONSULTA: A resposta é **${q.resposta}**. Você não pontua por essa questão.</span>`;
+                
+                // Desabilita opções e habilita o botão de próxima
+                document.querySelectorAll('.opcoes button').forEach(button => {
+                    button.disabled = true;
+                    if (button.textContent === q.resposta) {
+                        button.classList.add('correct');
+                    }
+                });
+                btnProxima.style.display = 'block';
+            }
+        } else {
+            alert("Você não tem mais Consultas ao Caderno disponíveis!");
+        }
+    }
+
+    // Função DESISTIR
+    function usarDesistir() {
+        if (confirm("Deseja DESISTIR do jogo? Seus resultados serão finalizados agora.")) {
+            finalizarJogo(true);
+        }
+    }
+
+    // Função GOD_MODE (para conferir sem punição)
+    function godMode() {
+        const q = questoesAtuais[indiceAtual];
+        alert(`GOD_MODE: A resposta correta é: ${q.resposta}`);
+    }
+
+
+    // Função para finalizar o jogo
+    function finalizarJogo(desistiu = false) {
+        opcoesArea.innerHTML = '';
+        btnProxima.style.display = 'none';
+        btnPular.disabled = true;
+        btnConsultar.disabled = true;
+        
+        let mensagem = `FIM DE JOGO!`;
+
+        if (desistiu) {
+            mensagem += `<br>Você desistiu com **${acertos}** acertos!`;
+        } else {
+            mensagem += `<br>Você completou o Show! Você acertou **${acertos}** de ${questoesAtuais.length} questões!`;
+        }
+        
+        const porcentagem = (acertos / questoesAtuais.length) * 100;
+        mensagem += `<br>Aproveitamento: ${porcentagem.toFixed(2)}%`;
+        
+        perguntaTexto.innerHTML = `<h2>${mensagem}</h2>`;
+        feedbackArea.innerHTML = '<button onclick="iniciarJogo()" style="background-color: #3F51B5; color: white; padding: 10px; border: none; border-radius: 5px; margin-top: 15px;">Recomeçar</button>';
+    }
+
+    // Inicia o jogo ao carregar a página
+    window.onload = iniciarJogo;
+
+</script>
+
+</body>
+</html>
