@@ -57,6 +57,7 @@ Clique no link:
 https://proflumabarbosa-star.github.io/show-das-transformacoes/
 
 ou através do QR-Code:
+[url_qrcodecreator.com.png](https://github.com/proflumabarbosa-star/show-das-transformacoes/blob/main/url_qrcodecreator.com.png)
 
 
 ## Objetivos Educacionais
