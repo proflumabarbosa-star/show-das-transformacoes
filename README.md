@@ -51,13 +51,8 @@ O design do jogo foi harmonizado com o **background verde-amarelado (#f0f4c3)**:
 
 ## Como Executar
 
-1. Clone o repositório:
-
 Clique no link:
 https://proflumabarbosa-star.github.io/show-das-transformacoes/
-
-ou através do QR-Code:
-[url_qrcodecreator.com.png](https://github.com/proflumabarbosa-star/show-das-transformacoes/blob/main/url_qrcodecreator.com.png)
 
 
 ## Objetivos Educacionais
